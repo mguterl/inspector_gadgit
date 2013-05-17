@@ -43,3 +43,9 @@ Or install it yourself as:
 ## References
 
 * http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+
+## TODO
+
+* You should be able to clone the project and run the specs, currently the repository inside of spec/fixtures/repository is causing problems.
+* Add bin/ files so that you can actually run this stuff.
+* Figure out what the output should look like
