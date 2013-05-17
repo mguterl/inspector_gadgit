@@ -1,5 +1,7 @@
 # Inspector Gadgit
 
+[![Code Climate](https://codeclimate.com/github/mguterl/inspector_gadgit.png)](https://codeclimate.com/github/mguterl/inspector_gadgit)
+
 This is a gem for inspecting git commits messages and ensuring that they are well formed.
 
 ## Installation
