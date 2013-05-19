@@ -1,5 +1,5 @@
 TEST_REPOSITORY_PATH = File.join(File.dirname(__FILE__), '..', 'fixtures', 'repository')
-CLEAN_REPOSITORY_SHA = '890c8096e387801a2d9b9bfdbb1ce50c29f7549e'
+CLEAN_REPOSITORY_SHA = '1243dd6b8a740d1923786025b0b0b0d1ad2c8f9e'
 
 module RepositoryHelpers
   def create_commit(message)
