@@ -14,19 +14,14 @@ describe 'Analyzes Single Commit' do
     end
   end
 
-  before do
-    reset_repository
-  end
-
-  after do
-    reset_repository
-  end
+  before { rebuild_repository }
+  after { destroy_repository }
 
   before do
     inspector.add_listener(listener)
   end
 
-  let(:inspector) { InspectorGadgit.new(TEST_REPOSITORY_PATH) }
+  let(:inspector) { InspectorGadgit.new(repository_path) }
   let(:listener) { TestListener.new }
 
   context 'when the commit has a summary of more than 50 characters' do

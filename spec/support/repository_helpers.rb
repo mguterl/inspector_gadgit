@@ -1,21 +1,36 @@
-TEST_REPOSITORY_PATH = File.join(File.dirname(__FILE__), '..', 'fixtures', 'repository')
-CLEAN_REPOSITORY_SHA = '1243dd6b8a740d1923786025b0b0b0d1ad2c8f9e'
+require 'fileutils'
 
 module RepositoryHelpers
+  TEST_REPOSITORY_PATH = File.expand_path(File.join(File.dirname(__FILE__), '..', 'fixtures', 'repository'))
+
+  def rebuild_repository
+    destroy_repository
+    create_repository
+  end
+
+  def create_repository
+    FileUtils.mkdir_p TEST_REPOSITORY_PATH
+    repository_command "git init"
+  end
+
+  def destroy_repository
+    `rm -rf #{TEST_REPOSITORY_PATH}`
+  end
+
+  def repository_path
+    TEST_REPOSITORY_PATH
+  end
+
   def create_commit(message)
     extract_sha repository_command("git commit --allow-empty -m \"#{message}\"")
   end
 
   def extract_sha(shell_output)
-    if shell_output =~ /\[\w+ (.*)\]/
+    if shell_output =~ /\[\w+ \(root-commit\)? (.*)\]/
       $1
     else
       raise RuntimeError, "could not extract SHA from #{shell_output}"
     end
-  end
-
-  def reset_repository
-    repository_command "git reset --hard #{CLEAN_REPOSITORY_SHA}"
   end
 
   def repository_command(command)
@@ -25,7 +40,7 @@ module RepositoryHelpers
   end
 
   def within_repository
-    Dir.chdir(TEST_REPOSITORY_PATH) do
+    Dir.chdir(repository_path) do
       yield
     end
   end
