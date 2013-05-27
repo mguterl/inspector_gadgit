@@ -8,6 +8,10 @@ module InspectorGadgit
       def stinks?(commit)
         commit.lines.any? { |line| line.size > @maximum_length }
       end
+
+      def description
+        "Lines over #{@maximum_length} characters"
+      end
     end
   end
 end

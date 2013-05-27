@@ -4,6 +4,10 @@ module InspectorGadgit
       def stinks?(commit)
         commit.summary.strip =~ /\.$/
       end
+
+      def description
+        "Summary ends with period"
+      end
     end
   end
 end

@@ -8,6 +8,10 @@ module InspectorGadgit
       def stinks?(commit)
         commit.summary.size > @maxixmum_length
       end
+
+      def description
+        'Summary too long'
+      end
     end
   end
 end
