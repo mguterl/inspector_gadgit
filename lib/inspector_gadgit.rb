@@ -2,6 +2,10 @@ require 'inspector_gadgit/version'
 
 module InspectorGadgit
 
+  PROJECT_DIR = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+  PROJECT_LIB = File.join(PROJECT_DIR, 'lib')
+  PROJECT_BIN = File.join(PROJECT_DIR, 'bin')
+
   autoload :GitRepository, 'inspector_gadgit/git_repository'
   autoload :Commit, 'inspector_gadgit/commit'
   autoload :SHA, 'inspector_gadgit/sha'

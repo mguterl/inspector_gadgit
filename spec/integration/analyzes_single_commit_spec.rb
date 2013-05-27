@@ -3,11 +3,7 @@ require 'spec_helper'
 describe 'Analyzes Single Commit' do
 
   def analyze_sha(sha)
-    project_root = File.expand_path(File.join(File.dirname(__FILE__), '..', '..'))
-    project_lib = File.join(project_root, 'lib')
-    project_bin = File.join(project_root, 'bin')
-
-    repository_command "ruby -I#{project_lib} -S #{project_bin}/inspector_gadgit analyze #{sha}"
+    repository_command "ruby -I#{InspectorGadgit::PROJECT_LIB} -S #{InspectorGadgit::PROJECT_BIN}/inspector_gadgit analyze #{sha}"
   end
 
   before { rebuild_repository }
