@@ -5,6 +5,7 @@ module InspectorGadgit
   autoload :GitRepository, 'inspector_gadgit/git_repository'
   autoload :Commit, 'inspector_gadgit/commit'
   autoload :SHA, 'inspector_gadgit/sha'
+  autoload :CLI, 'inspector_gadgit/cli'
 
   Dir["#{File.dirname(__FILE__)}/inspector_gadgit/smells/*.rb"].each { |smell| require smell }
 
@@ -13,7 +14,11 @@ module InspectorGadgit
   end
 
   SMELLS = [
-            Smells::SummaryTooLong.new
+            Smells::SummaryTooLong.new,
+            Smells::SecondLineIsNotBlank.new,
+            Smells::SummaryEndsWithPeriod.new,
+            Smells::SummaryIsNotCapitalized.new,
+            Smells::LinesTooLong.new,
            ]
 
   class Inspector
@@ -23,26 +28,11 @@ module InspectorGadgit
 
     def initialize(repository)
       @repository = repository
-      @listeners = []
-    end
-
-    def add_listener(listener)
-      @listeners << listener
     end
 
     def analyze(sha)
       commit = @repository.for_sha(sha)
-      notify_listeners(commit) if stinky?(commit)
-    end
-
-    private
-
-    def stinky?(commit)
-      SMELLS.any? { |smell| smell.stinks?(commit) }
-    end
-
-    def notify_listeners(commit)
-      @listeners.each { |listener| listener.bad_commit(commit.sha) }
+      SMELLS.select { |smell| smell.stinks?(commit) }
     end
   end
 

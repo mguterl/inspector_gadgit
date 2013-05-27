@@ -2,47 +2,44 @@ require 'spec_helper'
 
 describe 'Analyzes Single Commit' do
 
-  class TestListener
-    attr_reader :bad_commits
+  def analyze_sha(sha)
+    project_root = File.expand_path(File.join(File.dirname(__FILE__), '..', '..'))
+    project_lib = File.join(project_root, 'lib')
+    project_bin = File.join(project_root, 'bin')
 
-    def initialize
-      @bad_commits = []
-    end
-
-    def bad_commit(sha)
-      @bad_commits << sha
-    end
+    repository_command "ruby -I#{project_lib} -S #{project_bin}/inspector_gadgit analyze #{sha}"
   end
 
   before { rebuild_repository }
   after { destroy_repository }
 
-  before do
-    inspector.add_listener(listener)
-  end
-
   let(:inspector) { InspectorGadgit.new(repository_path) }
-  let(:listener) { TestListener.new }
 
-  context 'when the commit has a summary of more than 50 characters' do
+  context 'when the commit has warnings' do
     let!(:sha) {
-      create_commit "a" * 51
+      create_commit ("a" * 51) + "\nNonblank second line\n" + ("a" * 80)
     }
 
     it 'reports that this occurred' do
-      inspector.analyze(sha)
-      listener.bad_commits.should == [sha]
+      analyze_sha(sha).should == <<-EOM
+#{sha} -- 4 warnings:
+  Summary too long
+  Second line is not blank
+  Summary is not capitalized
+  Lines over 72 characters
+EOM
     end
   end
 
-  context 'when the commit has a summary of 50 characters' do
+  context 'when the commit has no warnings' do
     let!(:sha) {
-      create_commit "a" * 50
+      create_commit "A" * 50
     }
 
     it 'reports that this occurred' do
-      inspector.analyze(sha)
-      listener.bad_commits.should == []
+      analyze_sha(sha).should == <<-EOM
+#{sha} -- 0 warnings
+EOM
     end
   end
 
