@@ -9,8 +9,6 @@ describe 'Analyzes Single Commit' do
   before { rebuild_repository }
   after { destroy_repository }
 
-  let(:inspector) { InspectorGadgit.new(repository_path) }
-
   context 'when the commit has warnings' do
     let!(:sha) {
       create_commit ("a" * 51) + "\nNonblank second line\n" + ("a" * 80)
