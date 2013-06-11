@@ -25,6 +25,11 @@ module RepositoryHelpers
     extract_sha repository_command("git commit --allow-empty -m \"#{message}\"")
   end
 
+  # Returns the short SHA from the commit output.
+  #
+  # Handles:
+  # * [master (root-commit) e202e27] Hello # => e202e27
+  # * [master 81d5b0e] Hello # => 81d5b0e
   def extract_sha(shell_output)
     if shell_output =~ /\[\w+ (\(root-commit\) )?(.*)\]/
       $2
