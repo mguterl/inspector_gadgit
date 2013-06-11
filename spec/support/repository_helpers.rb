@@ -21,7 +21,7 @@ module RepositoryHelpers
     TEST_REPOSITORY_PATH
   end
 
-  def create_commit(message)
+  def create_commit(message = "Hello world")
     extract_sha repository_command("git commit --allow-empty -m \"#{message}\"")
   end
 
