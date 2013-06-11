@@ -26,8 +26,8 @@ module RepositoryHelpers
   end
 
   def extract_sha(shell_output)
-    if shell_output =~ /\[\w+ \(root-commit\)? (.*)\]/
-      $1
+    if shell_output =~ /\[\w+ (\(root-commit\) )?(.*)\]/
+      $2
     else
       raise RuntimeError, "could not extract SHA from #{shell_output}"
     end
